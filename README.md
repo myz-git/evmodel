@@ -29,3 +29,27 @@ CNN 能学习到形状/纹理等更复杂特征，通常比“颜色直方图 + 
 优点：依赖轻（不需要 torch）、推理快、部署简单、CPU 友好。
 
 缺点：特征主要是颜色分布，对“主题换色/光照变化/背景色干扰”更敏感；遇到图标边缘细节变化时泛化一般。
+
+## 环境准备
+
+ **环境**：使用 Python 3.10.6，PyTorch 2.3.1，OpenCV 4.9.0.80，PyAutoGUI 0.9.54，屏幕分辨率为 1920x1080
+
+```
+cd D:\Workspace\git\evmodel
+conda remove -n evmodel--all
+conda create -n evmodel python=3.10.6
+conda activate evmodel 
+
+conda install -y numpy=1.26.4
+pip uninstall -y torch torchvision torchaudio
+#for gpu
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+#for cpu:
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+
+pip install opencv-python
+pip install scikit-learn scikit-image
+pip install pillow pyautogui
+
+```
+

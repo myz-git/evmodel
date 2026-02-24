@@ -100,7 +100,7 @@ def main():
     logging.basicConfig(level=logging.INFO)
 
     # Load all classes
-    traindata_dir = 'traindata'
+    traindata_dir = '../traindata'
     all_classes = [os.path.basename(d) for d in glob.glob(os.path.join(traindata_dir, '*')) if os.path.isdir(d)]
     logging.info(f"所有类别: {all_classes}")
 

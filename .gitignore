@@ -1,7 +1,7 @@
 *.log
+debug*.png
 local/
 pic/
-traindata/
 machine/
 model/
 build/
@@ -11,6 +11,8 @@ static/
 __pycache__/
 licensing/
 keys/
+icon/
+traindata/
 cnn/icon/
 cnn/model_cnn/
 cnn/traindata/

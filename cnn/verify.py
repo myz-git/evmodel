@@ -70,7 +70,7 @@ def verify_icon(icon_name, max_attempts=3, template_threshold=0.80, model_thresh
         transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
     ])
     
-    template_path = os.path.join('icon', f"{icon_name}-1.png")
+    template_path = os.path.join('../icon', f"{icon_name}-1.png")
     template = cv2.imread(template_path, cv2.IMREAD_COLOR)
     if template is None:
         logging.error(f"Template image {template_path} not found")
@@ -81,7 +81,7 @@ def verify_icon(icon_name, max_attempts=3, template_threshold=0.80, model_thresh
     
     for attempt in range(max_attempts):
         screen_image = capture_screen()
-        save_debug_image(screen_image, f"screen_attempt_{attempt}")
+        #save_debug_image(screen_image, f"screen_attempt_{attempt}")
         screen_gray = cv2.cvtColor(screen_image, cv2.COLOR_BGR2GRAY)
         
         res = cv2.matchTemplate(screen_gray, template_gray, cv2.TM_CCOEFF_NORMED)
@@ -96,7 +96,7 @@ def verify_icon(icon_name, max_attempts=3, template_threshold=0.80, model_thresh
                 top_left = pt
                 bottom_right = (top_left[0] + w, top_left[1] + h)
                 icon_image = screen_image[top_left[1]:bottom_right[1], top_left[0]:bottom_right[0]]
-                save_debug_image(icon_image, f"icon_attempt_{attempt}_{pt}")
+                #save_debug_image(icon_image, f"icon_attempt_{attempt}_{pt}")
                 icon_rgb = cv2.cvtColor(icon_image, cv2.COLOR_BGR2RGB)
                 pil_image = Image.fromarray(icon_rgb)
                 tensor = transform(pil_image).unsqueeze(0).to(device)
@@ -133,7 +133,7 @@ def evaluate_accuracy(icon_name):
     """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = IconCNN().to(device)
-    model_path = os.path.join('model_cnn', f"{icon_name}_classifier.pth")
+    model_path = os.path.join('../model_cnn', f"{icon_name}_classifier.pth")
     try:
         model.load_state_dict(torch.load(model_path, map_location=device))
     except FileNotFoundError:

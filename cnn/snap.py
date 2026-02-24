@@ -5,7 +5,7 @@ import time
 import os
 import sys
 from glob import glob
-from utils import scollscreen
+
 
 def capture_screen():
     """捕获整个屏幕的截图并返回，转换屏幕截图为OpenCV可处理的BGR格式。"""
@@ -16,7 +16,7 @@ def capture_screen():
 
 def find_and_save_icon(template_filename, save_folder, capture_interval=0.5, num_captures=310):
     """使用模板匹配技术在屏幕截图中查找图标，并在找到后保存到指定文件夹。"""
-    template_path = os.path.join('icon', template_filename)  # 构建模板路径
+    template_path = os.path.join('../icon', template_filename)  # 构建模板路径
     base_filename = os.path.splitext(template_filename)[0]  # 从文件名中提取基本名字，不含扩展名
 
     # 创建以图标名命名的文件夹
@@ -81,5 +81,5 @@ if __name__ == "__main__":
         sys.exit(1)
 
     template_filename = sys.argv[1]  # 从命令行参数获取图标文件名
-    save_folder = 'traindata'  # 指定保存图标图像的根文件夹
+    save_folder = '../traindata'  # 指定保存图标图像的根文件夹
     find_and_save_icon(template_filename, save_folder)
