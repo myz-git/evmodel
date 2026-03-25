@@ -11,9 +11,6 @@ from PIL import Image
 import torchvision.transforms as transforms
 import pyautogui
 
-# 与 train.py 一致：模型在 cnn/model_cnn，数据在仓库根目录 traindata/、icon/
-_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-
 # Updated IconCNN with Adaptive Pooling
 class IconCNN(nn.Module):
     def __init__(self):
@@ -51,10 +48,10 @@ def capture_screen():
 def save_debug_image(image, filename):
     cv2.imwrite(f"debug_{filename}.png", image)
 
-def verify_icon(icon_name, max_attempts=3, template_threshold=0.86, model_threshold=0.9):
+def verify_icon(icon_name, max_attempts=3, template_threshold=0.85, model_threshold=0.85):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = IconCNN().to(device)
-    model_path = os.path.join(_SCRIPT_DIR, 'model_cnn', f"{icon_name}_classifier.pth")
+    model_path = os.path.join('model_cnn', f"{icon_name}_classifier.pth")
     
     try:
         model.load_state_dict(torch.load(model_path, map_location=device))
@@ -73,7 +70,7 @@ def verify_icon(icon_name, max_attempts=3, template_threshold=0.86, model_thresh
         transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
     ])
     
-    template_path = os.path.normpath(os.path.join(_SCRIPT_DIR, '..', 'icon', f"{icon_name}-1.png"))
+    template_path = os.path.join('../icon', f"{icon_name}-1.png")
     template = cv2.imread(template_path, cv2.IMREAD_COLOR)
     if template is None:
         logging.error(f"Template image {template_path} not found")
@@ -136,7 +133,7 @@ def evaluate_accuracy(icon_name):
     """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = IconCNN().to(device)
-    model_path = os.path.join(_SCRIPT_DIR, 'model_cnn', f"{icon_name}_classifier.pth")
+    model_path = os.path.join('../model_cnn', f"{icon_name}_classifier.pth")
     try:
         model.load_state_dict(torch.load(model_path, map_location=device))
     except FileNotFoundError:
@@ -149,9 +146,8 @@ def evaluate_accuracy(icon_name):
         transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
     ])
 
-    traindata_root = os.path.normpath(os.path.join(_SCRIPT_DIR, '..', 'traindata'))
-    pos_dir = os.path.join(traindata_root, f'{icon_name}-1')
-    neg_dir = os.path.join(traindata_root, f'{icon_name}-0')
+    pos_dir = os.path.join('traindata', f'{icon_name}-1')
+    neg_dir = os.path.join('traindata', f'{icon_name}-0')
     pos_paths = sorted(glob.glob(os.path.join(pos_dir, '*.png')))
     neg_paths = sorted(glob.glob(os.path.join(neg_dir, '*.png')))
     if not pos_paths:

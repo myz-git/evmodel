@@ -17,7 +17,7 @@ logging.basicConfig(
 def rename_files(directory):
     """重命名指定目录下的PNG文件为<目录名>-<index>.png"""
     # 构建目录路径
-    traindata_dir = 'traindata'
+    traindata_dir = '../traindata'
     target_dir = os.path.join(traindata_dir, directory)
     
     # 检查目录是否存在
